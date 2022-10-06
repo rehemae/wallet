@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet list</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Wallets' list</h1>
+        <div class="row">
+            {% for wallet in wallets %}
+            <div class="col-md-4">
+                <div class="card">
+                    <h3 class="card-text">Customer: {{wallet.customer}}</h3>
+                    <p class="card-text">Date: {{wallet.date}}</p>
+                    <p class="card-text">Balance: {{wallet.balance}}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>
