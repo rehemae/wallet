@@ -1,6 +1,8 @@
+from os import stat
 from django.shortcuts import render, redirect
-from .forms import AccountRegistrationForm, CardRegistrationForm, CurrencyRegistrationForm, CustomerRegistrationForm, LoanRegistrationForm, NotificationRegistrationForm, ReceiptRegistrationForm, RecieptRegistrationForm, RewardRegistrationForm, ThirdPartyRegistrationForm, TransactionRegistrationForm, WalletRegistrationForm
+from .forms import AccountRegistrationForm, CardRegistrationForm, CurrencyRegistrationForm, CustomerRegistrationForm, LoanRegistrationForm, NotificationRegistrationForm, ReceiptRegistrationForm, RewardRegistrationForm, ThirdPartyRegistrationForm, TransactionRegistrationForm, WalletRegistrationForm
 from .models import Account, Card, Currency, Customer, Loan, Notification, Receipt, Reward, ThirdParty, Transaction, Wallet
+
 
 # Create your views here.
 
@@ -118,6 +120,8 @@ def register_currency(request):
     return render(request, 'wallet/register_currency.html', {'form': form})
 
 # Displaying the list of customers
+
+
 def customer_list(request):
     customers = Customer.objects.all()
     return render(request, 'wallet/customer.html', {'customers': customers})
@@ -178,25 +182,30 @@ def customer_profile(request, id):
     customer = Customer.objects.get(id=id)
     return render(request, 'wallet/customer-profile.html', {'customer': customer})
 
+
 def wallet_display(request, id):
     wallet = Wallet.objects.get(id=id)
     return render(request, 'wallet/wallet-display.html', {'wallet': wallet})
+
 
 def account_display(request, id):
     account = Account.objects.get(id=id)
     return render(request, 'wallet/account-display.html', {'account': account})
 
+
 def card_display(request, id):
     card = Card.objects.get(id=id)
     return render(request, 'wallet/card-display.html', {'card': card})
+
 
 def transaction_display(request, id):
     transaction = Transaction.objects.get(id=id)
     return render(request, 'wallet/transaction-display.html', {'transaction': transaction})
 
+
 def receipt_display(request, id):
     receipt = Receipt.objects.get(id=id)
-    return render(request, 'wallet/receipt-display.html',   {'receipt': receipt})    
+    return render(request, 'wallet/receipt-display.html',   {'receipt': receipt})
 
 
 # Editing the customer profile
@@ -212,17 +221,19 @@ def edit_customer_profile(request, id):
         form = CustomerRegistrationForm(instance=customer)
         return render(request, 'wallet/edit_customer.html', {'form': form})
 
+
 def edit_wallet(request, id):
     wallet = Wallet.objects.get(id=id)
     if request.method == 'POST':
         form = WalletRegistrationForm(request.POST, instance=wallet)
         if form.is_valid():
             form.save()
-            return redirect('profile', id=wallet.id)
+            return redirect('wallet-display', id=wallet.id)
 
     else:
         form = WalletRegistrationForm(instance=wallet)
         return render(request, 'wallet/edit_wallet.html', {'form': form})
+
 
 def edit_account(request, id):
     account = Account.objects.get(id=id)
@@ -236,6 +247,7 @@ def edit_account(request, id):
         form = AccountRegistrationForm(instance=account)
         return render(request, 'wallet/edit_account.html', {'form': form})
 
+
 def edit_receipt(request, id):
     receipt = Receipt.objects.get(id=id)
     if request.method == 'POST':
@@ -248,6 +260,7 @@ def edit_receipt(request, id):
         form = ReceiptRegistrationForm(instance=receipt)
         return render(request, 'wallet/edit_receipt.html', {'form': form})
 
+
 def edit_card(request, id):
     card = Card.objects.get(id=id)
     if request.method == 'POST':
@@ -259,6 +272,7 @@ def edit_card(request, id):
     else:
         form = CardRegistrationForm(instance=card)
         return render(request, 'wallet/edit_card.html', {'form': form})
+
 
 def edit_transaction(request, id):
     transact = Transaction.objects.get(id=id)

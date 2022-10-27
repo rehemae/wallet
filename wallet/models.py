@@ -26,14 +26,14 @@ class Customer(models.Model):
     employment_status = models.BooleanField(default=False)
     marital_status = models.CharField(
         max_length=20, null=True)
-    
-    
+
     # def __str__(self):
     #     return self.first_name
 
 
 class Wallet(models.Model):
-    customer = models.OneToOneField('Customer', on_delete=models.DO_NOTHING , related_name= 'customer')
+    customer = models.OneToOneField(
+        'Customer', on_delete=models.DO_NOTHING, related_name='customer')
     date = models.DateTimeField(default=datetime.datetime.now)
     pin = models.IntegerField()
     is_active = models.BooleanField(default=False)
@@ -42,15 +42,70 @@ class Wallet(models.Model):
     # def __str__(self):
     #     return self.customer
 
+
 class Account(models.Model):
     acc_type = models.CharField(max_length=255, blank=True)
     acc_name = models.CharField(max_length=255, blank=True)
-    savings = models.IntegerField()
+    savings = models.IntegerField(default=0)
+    acc_balance = models.IntegerField(default=0)
     wallet = models.ForeignKey('Wallet', on_delete=models.CASCADE)
-    # destination = models.CharField(max_length=255, blank=True)
+    destination = models.CharField(max_length=255, blank=True)
 
-    # def __str__(self):
-    #     return self.accName
+    # Adding deposit functionality to account model
+    def deposit(self, amount):
+        if amount <= 0:
+            message = "Invalid amount"
+            status = 403
+        else:
+            self.account_balance += amount
+            self.save()
+            message = f"You have deposited {amount}, your new balance is {self.acc_balance}"
+            status = 200
+        return message, status
+
+        # Let’s add another method in the account model to
+        # transfer funds to another account to another.
+    def transfer(self, destination, amount):
+       if amount <= 0:
+           message = "Invalid amount"
+           status = 403
+
+       elif amount < self.account_balance:
+           message = "Insufficient balance"
+           status = 403
+
+       else:
+           self.account_balance -= amount
+           self.save()
+           destination.deposit(amount)
+
+           message = f"You have transfered {amount}, your new balance is {self.account_balance}"
+           status = 200
+       return message, status
+
+# Withdraw functionality
+    def withdraw(self, amount):
+        if amount <= 0:
+            message = "Invalid amount"
+            status = 403
+        else:
+            self.account_balance -= amount
+            self.save()
+            message = f"You have withdrawn {amount}, your new balance is {self.acc_balance}"
+            status = 200
+        return message, status
+
+    #  Request loan functionality
+    def request_loan(self, amount):
+        if amount<= 0:
+            message = "Invalid amount"
+            status = 403
+        else:
+            self.acc_balance += amount
+            self.save()
+            message = f"Your "
+
+    
 
 
 class Reward(models.Model):

@@ -1,0 +1,9 @@
+asgiref==3.5.2
+backports.zoneinfo==0.2.1
+Django==4.0.6
+django-countries==7.3.2
+Pillow==9.2.0
+psycopg2-binary==2.9.3
+pyuca==1.2
+sqlparse==0.4.2
+typing-extensions==4.3.0
